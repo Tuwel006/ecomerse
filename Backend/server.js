@@ -1,57 +1,63 @@
-require('dotenv').config();
 const express = require('express');
+const mongoose = require('mongoose');
 const cors = require('cors');
-const morgan = require('morgan');
-const connectDB = require('./config/database');
-const routes = require('./routes');
-const { errorHandler, notFoundHandler } = require('./middleware/errorHandler');
+const dotenv = require('dotenv');
+
+// Load environment variables
+dotenv.config();
 
 const app = express();
 
-// Connect to MongoDB
-connectDB();
-
 // Middleware
-app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:3000',
-  credentials: true
-}));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(morgan('dev'));
 
-// Serve static files
-app.use('/uploads', express.static('uploads'));
+// Database connection
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/ecommerce', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.error('Database connection error:', error);
+    process.exit(1);
+  }
+};
 
-// API Routes
-app.use('/api', routes);
+connectDB();
 
-// Root endpoint
-app.get('/', (req, res) => {
-  res.json({
-    success: true,
-    message: 'Blog API Server',
-    version: '2.0.0',
-    endpoints: {
-      auth: '/api/auth',
-      users: '/api/users',
-      posts: '/api/posts',
-      comments: '/api/comments',
-      stats: '/api/stats',
-      health: '/api/health'
-    }
+// Routes
+app.use('/api/auth', require('./routes/auth.routes'));
+app.use('/api/products', require('./routes/product.routes'));
+
+// Health check
+app.get('/api/health', (req, res) => {
+  res.json({ success: true, message: 'Server is running' });
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({
+    success: false,
+    message: 'Something went wrong!',
+    error: process.env.NODE_ENV === 'development' ? err.message : {}
   });
 });
 
-// Error Handlers
-app.use(notFoundHandler);
-app.use(errorHandler);
-
-// Start Server
-const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
-  console.log(`📡 API available at http://localhost:${PORT}/api`);
+// 404 handler
+app.use('*', (req, res) => {
+  res.status(404).json({
+    success: false,
+    message: 'Route not found'
+  });
 });
 
-module.exports = app;
+const PORT = process.env.PORT || 8000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

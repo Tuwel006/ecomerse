@@ -1,0 +1,82 @@
+/* Image optimization */
+.product-image {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  background: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+  background: #f3f4f6;
+}
+
+.product-image img[src="/api/placeholder/200/200"] {
+  opacity: 0.7;
+  background: linear-gradient(45deg, #f3f4f6 25%, transparent 25%), 
+              linear-gradient(-45deg, #f3f4f6 25%, transparent 25%), 
+              linear-gradient(45deg, transparent 75%, #f3f4f6 75%), 
+              linear-gradient(-45deg, transparent 75%, #f3f4f6 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+
+/* Lazy loading optimization */
+img[loading="lazy"] {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+img[loading="lazy"].loaded {
+  opacity: 1;
+}
+
+/* Performance optimizations */
+.product-card {
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.product-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Prevent layout shift */
+.grid {
+  display: grid;
+  gap: 16px;
+  min-height: 200px;
+}
+
+.loading {
+  min-height: 200px;
+}
+
+/* SEO improvements */
+h1, h2, h3 {
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.hero h1 {
+  font-size: clamp(28px, 5vw, 48px);
+}
+
+/* Mobile performance */
+@media (max-width: 768px) {
+  .product-image {
+    height: 180px;
+  }
+  
+  .grid {
+    gap: 12px;
+  }
+}

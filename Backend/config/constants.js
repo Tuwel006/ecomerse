@@ -2,14 +2,18 @@
 const ROLES = {
     ADMIN: 'admin',
     AUTHOR: 'author',
-    VIEWER: 'viewer'
+    VIEWER: 'viewer',
+    CUSTOMER: 'customer',
+    VENDOR: 'vendor',
+    MANAGER: 'manager'
 };
 
 // User Status
 const USER_STATUS = {
     PENDING: 'pending',
     APPROVED: 'approved',
-    REJECTED: 'rejected'
+    REJECTED: 'rejected',
+    SUSPENDED: 'suspended'
 };
 
 // Permissions by Role
@@ -20,7 +24,27 @@ const PERMISSIONS = {
         'manage_comments',
         'view_analytics',
         'approve_users',
-        'delete_users'
+        'delete_users',
+        'manage_products',
+        'manage_orders',
+        'manage_categories',
+        'view_reports',
+        'manage_settings',
+        'manage_payments'
+    ],
+    [ROLES.MANAGER]: [
+        'manage_products',
+        'manage_orders',
+        'view_analytics',
+        'manage_categories',
+        'view_reports'
+    ],
+    [ROLES.VENDOR]: [
+        'create_product',
+        'edit_own_product',
+        'delete_own_product',
+        'view_own_products',
+        'view_own_orders'
     ],
     [ROLES.AUTHOR]: [
         'create_post',
@@ -28,11 +52,48 @@ const PERMISSIONS = {
         'delete_own_post',
         'view_own_posts'
     ],
+    [ROLES.CUSTOMER]: [
+        'view_products',
+        'add_to_cart',
+        'place_order',
+        'view_own_orders',
+        'add_review',
+        'view_posts',
+        'add_comment'
+    ],
     [ROLES.VIEWER]: [
         'view_posts',
         'add_comment',
-        'like_post'
+        'like_post',
+        'view_products'
     ]
+};
+
+// Order Status
+const ORDER_STATUS = {
+    PENDING: 'pending',
+    CONFIRMED: 'confirmed',
+    PROCESSING: 'processing',
+    SHIPPED: 'shipped',
+    DELIVERED: 'delivered',
+    CANCELLED: 'cancelled',
+    REFUNDED: 'refunded'
+};
+
+// Payment Status
+const PAYMENT_STATUS = {
+    PENDING: 'pending',
+    PAID: 'paid',
+    FAILED: 'failed',
+    REFUNDED: 'refunded',
+    PARTIALLY_REFUNDED: 'partially_refunded'
+};
+
+// Product Status
+const PRODUCT_STATUS = {
+    DRAFT: 'draft',
+    ACTIVE: 'active',
+    ARCHIVED: 'archived'
 };
 
 // HTTP Status Codes
@@ -53,5 +114,8 @@ module.exports = {
     ROLES,
     USER_STATUS,
     PERMISSIONS,
-    STATUS_CODES
+    STATUS_CODES,
+    ORDER_STATUS,
+    PAYMENT_STATUS,
+    PRODUCT_STATUS
 };
