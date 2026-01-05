@@ -45,18 +45,20 @@ api.interceptors.response.use(
     } else if (error.response) {
       message = error.response.data?.message || `Error ${error.response.status}`;
       
-      if (error.response.status === 401) {
+      // Only redirect to login for 401 errors on protected routes, not login attempts
+      if (error.response.status === 401 && !error.config.url.includes('/auth/login')) {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
-        if (window.location.pathname !== '/login') {
+        if (!window.location.pathname.includes('/login') && !window.location.pathname.includes('/admin/login')) {
           window.location.href = '/login';
         }
         message = 'Session expired. Please login again.';
       }
     }
     
-    // Don't show toast for auth errors in login/register
-    if (!window.location.pathname.includes('/login') && !window.location.pathname.includes('/register')) {
+    // Don't show toast for auth errors during login attempts
+    const isLoginAttempt = error.config?.url?.includes('/auth/login');
+    if (!isLoginAttempt && !window.location.pathname.includes('/login') && !window.location.pathname.includes('/register')) {
       toast.error(message);
     }
     

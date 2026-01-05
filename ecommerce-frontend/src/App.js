@@ -14,10 +14,12 @@ import Profile from './pages/Profile';
 import Orders from './pages/Orders';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminProducts from './pages/AdminProducts';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
 import './App.css';
 import './styles/performance.css';
+import './styles/admin.css';
 
 function App() {
   return (
@@ -26,46 +28,79 @@ function App() {
         <CartProvider>
           <Router>
             <div className="app">
-              <Header />
-              <main className="main-content">
-                <Routes>
-                  {/* Public Routes */}
-                  <Route path="/" element={<Home />} />
-                  <Route path="/products" element={<Products />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/register" element={<Register />} />
-                  
-                  {/* User Protected Routes */}
-                  <Route 
-                    path="/profile" 
-                    element={
-                      <ProtectedRoute>
-                        <Profile />
-                      </ProtectedRoute>
-                    } 
-                  />
-                  <Route 
-                    path="/orders" 
-                    element={
-                      <ProtectedRoute>
-                        <Orders />
-                      </ProtectedRoute>
-                    } 
-                  />
-                  
-                  {/* Admin Routes */}
-                  <Route path="/admin/login" element={<AdminLogin />} />
-                  <Route 
-                    path="/admin" 
-                    element={
-                      <AdminRoute>
-                        <AdminDashboard />
-                      </AdminRoute>
-                    } 
-                  />
-                </Routes>
-              </main>
-              <Footer />
+              <Routes>
+                {/* Public Routes with Header/Footer */}
+                <Route path="/" element={
+                  <>
+                    <Header />
+                    <main className="main-content">
+                      <Home />
+                    </main>
+                    <Footer />
+                  </>
+                } />
+                <Route path="/products" element={
+                  <>
+                    <Header />
+                    <main className="main-content">
+                      <Products />
+                    </main>
+                    <Footer />
+                  </>
+                } />
+                <Route path="/login" element={
+                  <>
+                    <Header />
+                    <main className="main-content">
+                      <Login />
+                    </main>
+                    <Footer />
+                  </>
+                } />
+                <Route path="/register" element={
+                  <>
+                    <Header />
+                    <main className="main-content">
+                      <Register />
+                    </main>
+                    <Footer />
+                  </>
+                } />
+                
+                {/* User Protected Routes with Header/Footer */}
+                <Route path="/profile" element={
+                  <ProtectedRoute>
+                    <Header />
+                    <main className="main-content">
+                      <Profile />
+                    </main>
+                    <Footer />
+                  </ProtectedRoute>
+                } />
+                <Route path="/orders" element={
+                  <ProtectedRoute>
+                    <Header />
+                    <main className="main-content">
+                      <Orders />
+                    </main>
+                    <Footer />
+                  </ProtectedRoute>
+                } />
+                
+                {/* Admin Routes without Header/Footer */}
+                <Route path="/admin/login" element={<AdminLogin />} />
+                <Route path="/admin" element={
+                  <AdminRoute>
+                    <AdminDashboard />
+                  </AdminRoute>
+                } />
+                <Route path="/admin/products" element={
+                  <AdminRoute>
+                    <AdminProducts />
+                  </AdminRoute>
+                } />
+              </Routes>
+              
               <Toaster 
                 position="top-right"
                 toastOptions={{

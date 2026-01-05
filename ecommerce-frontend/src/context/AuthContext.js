@@ -77,18 +77,20 @@ export const AuthProvider = React.memo(({ children }) => {
         dispatch({ type: 'SET_TOKEN', payload: token });
         dispatch({ type: 'SET_USER', payload: user });
         
-        toast.success('Login successful');
+        toast.success(`Welcome back, ${user.name}!`);
         return { success: true, data: { user, token } };
       } else {
         const errorMsg = response?.message || 'Invalid email or password';
         console.log('AuthContext: Login failed:', errorMsg);
         dispatch({ type: 'SET_ERROR', payload: errorMsg });
+        dispatch({ type: 'SET_LOADING', payload: false });
         return { success: false, message: errorMsg };
       }
     } catch (error) {
       console.error('AuthContext: Login error:', error);
       const errorMsg = error.response?.data?.message || 'Login failed';
       dispatch({ type: 'SET_ERROR', payload: errorMsg });
+      dispatch({ type: 'SET_LOADING', payload: false });
       return { success: false, message: errorMsg };
     }
   }, []);
