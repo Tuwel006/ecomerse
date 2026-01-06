@@ -66,7 +66,7 @@ const AdminDashboard = React.memo(() => {
   return (
     <>
       <Helmet>
-        <title>Admin Dashboard - ShopHub</title>
+        <title>Admin Dashboard - DSM Kart</title>
       </Helmet>
       
       <AdminLayout currentPage="dashboard">

@@ -30,7 +30,7 @@ const AdminLayout = ({ children, currentPage = 'dashboard' }) => {
           >
             ☰
           </button>
-          <h1>ShopHub Admin</h1>
+          <h1>DSM Kart Admin</h1>
         </div>
         <div className="admin-header-right">
           <span>Welcome, {user?.name}</span>

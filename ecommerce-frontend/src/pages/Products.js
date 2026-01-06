@@ -79,15 +79,15 @@ const Products = React.memo(() => {
   const pageTitle = useMemo(() => {
     const category = filters.category;
     return category 
-      ? `${category.charAt(0).toUpperCase() + category.slice(1)} Products - ShopHub`
-      : 'All Products - ShopHub';
+      ? `${category.charAt(0).toUpperCase() + category.slice(1)} Products - DSM Kart`
+      : 'All Products - DSM Kart';
   }, [filters.category]);
 
   if (loading) {
     return (
       <>
         <Helmet>
-          <title>Loading Products... - ShopHub</title>
+          <title>Loading Products... - DSM Kart</title>
         </Helmet>
         <div className="loading">
           <div className="spinner"></div>

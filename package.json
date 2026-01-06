@@ -1,0 +1,14 @@
+{
+  "name": "dsm-kart",
+  "version": "1.0.0",
+  "description": "DSM Kart - Full-stack ecommerce platform",
+  "scripts": {
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "backend": "npm run dev --prefix Backend",
+    "frontend": "npm start --prefix ecommerce-frontend",
+    "install-all": "npm install && npm install --prefix Backend && npm install --prefix ecommerce-frontend"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

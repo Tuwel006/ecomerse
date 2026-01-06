@@ -46,10 +46,10 @@ const Header = () => {
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-2 flex-shrink-0">
               <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-white font-display font-bold text-xl">T</span>
+                <span className="text-white font-display font-bold text-xl">D</span>
               </div>
               <h1 className="font-display text-xl sm:text-2xl font-bold text-black hidden xs:block" style={{ margin: 0 }}>
-                Techcentry
+                DSM Kart
               </h1>
             </Link>
 

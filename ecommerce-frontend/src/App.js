@@ -15,6 +15,7 @@ import Orders from './pages/Orders';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminProducts from './pages/AdminProducts';
+import NotFound from './pages/NotFound';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
 import './App.css';
@@ -98,6 +99,17 @@ function App() {
                   <AdminRoute>
                     <AdminProducts />
                   </AdminRoute>
+                } />
+                
+                {/* 404 Route */}
+                <Route path="*" element={
+                  <>
+                    <Header />
+                    <main className="main-content">
+                      <NotFound />
+                    </main>
+                    <Footer />
+                  </>
                 } />
               </Routes>
               

@@ -78,8 +78,8 @@ const Login = React.memo(() => {
   return (
     <>
       <Helmet>
-        <title>Login - ShopHub</title>
-        <meta name="description" content="Login to your ShopHub account to access your orders, wishlist and account settings." />
+        <title>Login - DSM Kart</title>
+        <meta name="description" content="Login to your DSM Kart account to access your orders, wishlist and account settings." />
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 

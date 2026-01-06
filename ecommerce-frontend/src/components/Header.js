@@ -66,7 +66,7 @@ const Header = () => {
         <div className="container">
           <div className="main-header-content">
             <Link to="/" className="logo">
-              <h1>ShopHub</h1>
+              <h1>DSM Kart</h1>
             </Link>
 
             <div className="search-bar">

@@ -85,8 +85,8 @@ const AdminLogin = React.memo(() => {
   return (
     <>
       <Helmet>
-        <title>Admin Login - ShopHub</title>
-        <meta name="description" content="Admin login for ShopHub management dashboard." />
+        <title>Admin Login - DSM Kart</title>
+        <meta name="description" content="Admin login for DSM Kart management dashboard." />
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 

@@ -1,19 +1,19 @@
 @echo off
-echo Starting E-commerce Platform...
+echo Starting DSM Kart Platform...
 echo.
 
 echo Starting Backend Server...
-start "Backend Server" cmd /k "cd Backend && npm run dev"
+start "DSM Kart Backend" cmd /k "cd Backend && npm run dev"
 
 timeout /t 3 /nobreak > nul
 
 echo Starting Frontend Server...
-start "Frontend Server" cmd /k "cd ecommerce-frontend && npm start"
+start "DSM Kart Frontend" cmd /k "cd ecommerce-frontend && npm start"
 
 echo.
-echo ✅ Both servers are starting...
-echo 🔗 Backend: http://localhost:8000
-echo 🔗 Frontend: http://localhost:3000
+echo ✅ DSM Kart servers are starting...
+echo 🔗 Backend: http://localhost:8001
+echo 🔗 Frontend: http://localhost:5001
 echo 🔗 MongoDB: mongodb://localhost:27017/ecommerce-platform
 echo.
 echo Login Credentials:

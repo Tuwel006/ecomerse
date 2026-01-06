@@ -10,9 +10,9 @@ const Footer = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-6 sm:mb-8">
           {/* About */}
           <div className="sm:col-span-2 lg:col-span-1">
-            <h3 className="font-display text-lg sm:text-xl font-bold mb-3 sm:mb-4" style={{ color: 'white' }}>Techcentry</h3>
+            <h3 className="font-display text-lg sm:text-xl font-bold mb-3 sm:mb-4" style={{ color: 'white' }}>DSM Kart</h3>
             <p className="text-gray-400 font-ui text-sm leading-relaxed">
-              A platform for sharing insights, stories, and knowledge. Join our community of readers and writers.
+              Your trusted ecommerce platform for quality products and exceptional shopping experience.
             </p>
           </div>
 
@@ -92,7 +92,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="border-t border-gray-700 pt-6 sm:pt-8 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
           <p className="text-gray-400 font-ui text-sm text-center sm:text-left">
-            © {currentYear} Techcentry. All rights reserved.
+            © {currentYear} DSM Kart. All rights reserved.
           </p>
           <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6">
             <Link to="/privacy" className="text-gray-400 hover:text-white font-ui text-sm transition-colors touch-target text-center">

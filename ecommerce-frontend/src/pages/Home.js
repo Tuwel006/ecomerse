@@ -50,7 +50,7 @@ const Home = React.memo(() => {
     return (
       <>
         <Helmet>
-          <title>Loading... - ShopHub</title>
+          <title>Loading... - DSM Kart</title>
         </Helmet>
         <div className="loading">
           <div className="spinner"></div>
@@ -63,7 +63,7 @@ const Home = React.memo(() => {
     return (
       <>
         <Helmet>
-          <title>Error - ShopHub</title>
+          <title>Error - DSM Kart</title>
         </Helmet>
         <div className="container">
           <div className="error-message">
@@ -80,10 +80,10 @@ const Home = React.memo(() => {
   return (
     <>
       <Helmet>
-        <title>ShopHub - Premium E-commerce Store | Best Deals Online</title>
-        <meta name="description" content="Discover amazing products at unbeatable prices. Shop electronics, clothing, home & garden, sports equipment and more at ShopHub." />
+        <title>DSM Kart - Premium E-commerce Store | Best Deals Online</title>
+        <meta name="description" content="Discover amazing products at unbeatable prices. Shop electronics, clothing, home & garden, sports equipment and more at DSM Kart." />
         <meta name="keywords" content="ecommerce, online shopping, electronics, clothing, home garden, sports" />
-        <meta property="og:title" content="ShopHub - Premium E-commerce Store" />
+        <meta property="og:title" content="DSM Kart - Premium E-commerce Store" />
         <meta property="og:description" content="Discover amazing products at unbeatable prices" />
         <meta property="og:type" content="website" />
         <link rel="canonical" href="/" />
@@ -93,7 +93,7 @@ const Home = React.memo(() => {
         {/* Hero Section */}
         <section className="hero">
           <div className="card">
-            <h1>Welcome to ShopHub</h1>
+            <h1>Welcome to DSM Kart</h1>
             <p>Discover amazing products at unbeatable prices</p>
             <div className="hero-actions">
               <Link to="/products" className="btn btn-primary">

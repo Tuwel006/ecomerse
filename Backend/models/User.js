@@ -22,9 +22,16 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['user', 'admin'],
-    default: 'user'
+    enum: ['customer', 'admin', 'manager'],
+    default: 'customer'
   },
+  status: {
+    type: String,
+    enum: ['pending', 'approved', 'suspended'],
+    default: 'pending'
+  },
+  firstName: String,
+  lastName: String,
   phone: {
     type: String,
     default: ''
