@@ -29,16 +29,6 @@
   background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
 }
 
-/* Lazy loading optimization */
-img[loading="lazy"] {
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-img[loading="lazy"].loaded {
-  opacity: 1;
-}
-
 /* Performance optimizations */
 .product-card {
   will-change: transform;

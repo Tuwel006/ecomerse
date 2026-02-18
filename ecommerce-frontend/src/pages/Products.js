@@ -201,7 +201,7 @@ const ProductCard = React.memo(({ product, onAddToCart }) => {
   if (!product?._id) return null;
 
   const imageUrl = getImageUrl(product.image || (product.images && product.images[0]?.url));
-  console.log("imageUrl", imageUrl);
+
   return (
     <div className="card product-card">
       <div className="product-image" style={{ background: '#f3f4f6', height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
@@ -214,7 +214,6 @@ const ProductCard = React.memo(({ product, onAddToCart }) => {
             }
           }}
           referrerPolicy="no-referrer"
-          // loading="lazy"
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         />
       </div>

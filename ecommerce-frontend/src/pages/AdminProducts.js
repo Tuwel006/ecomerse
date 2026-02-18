@@ -92,7 +92,12 @@ const AdminProducts = React.memo(() => {
                           src={getImageUrl(product.image || (product.images && product.images[0]?.url))}
                           alt={product.name}
                           className="product-thumb"
-                          onError={(e) => e.target.src = 'https://via.placeholder.com/40x40?text=NA'}
+                          referrerPolicy="no-referrer"
+                          onError={(e) => {
+                            if (e.target.src !== 'https://placehold.co/40x40?text=NA') {
+                              e.target.src = 'https://placehold.co/40x40?text=NA';
+                            }
+                          }}
                         />
                       </td>
                       <td>{product.name}</td>
