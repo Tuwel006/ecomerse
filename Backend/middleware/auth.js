@@ -17,7 +17,7 @@ const protect = async (req, res, next) => {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret');
       req.user = await User.findById(decoded.id);
-      
+
       if (!req.user) {
         return apiResponse(res, 401, 'Not authorized, user not found');
       }
@@ -40,4 +40,25 @@ const adminOnly = (req, res, next) => {
   }
 };
 
-module.exports = { protect, adminOnly };
+const optionalAuth = async (req, res, next) => {
+  try {
+    let token;
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+      token = req.headers.authorization.split(' ')[1];
+    }
+
+    if (token) {
+      try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret');
+        req.user = await User.findById(decoded.id);
+      } catch (error) {
+        // Continue without user
+      }
+    }
+    next();
+  } catch (error) {
+    next();
+  }
+};
+
+module.exports = { protect, adminOnly, optionalAuth };

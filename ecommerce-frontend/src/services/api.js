@@ -1,7 +1,8 @@
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
+export const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8001/api';
+export const BASE_URL = API_BASE_URL.replace(/\/api$/, '');
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -10,6 +11,19 @@ const api = axios.create({
     'Content-Type': 'application/json',
   },
 });
+
+export const getImageUrl = (url) => {
+  if (!url) return 'https://placehold.co/400x400?text=No+Image';
+
+  if (typeof url !== 'string') return 'https://placehold.co/400x400?text=Invalid+Image+URL';
+
+  if (url.startsWith('http') || url.startsWith('data:')) {
+    return url;
+  }
+
+  const cleanUrl = url.startsWith('/') ? url.substring(1) : url;
+  return `${BASE_URL}/${cleanUrl.startsWith('uploads/') ? cleanUrl : 'uploads/' + cleanUrl}`;
+};
 
 // Request interceptor
 api.interceptors.request.use(
@@ -35,16 +49,16 @@ api.interceptors.response.use(
   },
   (error) => {
     console.error('API Error:', error.response?.status, error.response?.data);
-    
+
     let message = 'Something went wrong';
-    
+
     if (error.code === 'ECONNABORTED') {
       message = 'Request timeout. Please try again.';
     } else if (error.code === 'ERR_NETWORK') {
       message = 'Network error. Please check your connection.';
     } else if (error.response) {
       message = error.response.data?.message || `Error ${error.response.status}`;
-      
+
       // Only redirect to login for 401 errors on protected routes, not login attempts
       if (error.response.status === 401 && !error.config.url.includes('/auth/login')) {
         localStorage.removeItem('token');
@@ -55,13 +69,13 @@ api.interceptors.response.use(
         message = 'Session expired. Please login again.';
       }
     }
-    
+
     // Don't show toast for auth errors during login attempts
     const isLoginAttempt = error.config?.url?.includes('/auth/login');
     if (!isLoginAttempt && !window.location.pathname.includes('/login') && !window.location.pathname.includes('/register')) {
       toast.error(message);
     }
-    
+
     return Promise.reject(error);
   }
 );
@@ -76,9 +90,9 @@ export const authAPI = {
       return response;
     } catch (error) {
       console.error('authAPI.login error:', error);
-      return { 
-        success: false, 
-        message: error.response?.data?.message || 'Login failed' 
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Login failed'
       };
     }
   },
@@ -88,9 +102,9 @@ export const authAPI = {
       const response = await api.post('/auth/register', userData);
       return response;
     } catch (error) {
-      return { 
-        success: false, 
-        message: error.response?.data?.message || 'Registration failed' 
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Registration failed'
       };
     }
   },

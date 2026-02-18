@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { 
-  ShoppingCartIcon, 
-  HeartIcon, 
+import {
+  ShoppingCartIcon,
+  HeartIcon,
   EyeIcon,
-  StarIcon 
+  StarIcon
 } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid';
 import { useCartStore } from '../../store/ecommerceStore';
 import toast from 'react-hot-toast';
+import { getImageUrl } from '../../services/api';
 
 const ProductCard = ({ product, className = '' }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -19,7 +20,7 @@ const ProductCard = ({ product, className = '' }) => {
   const handleAddToCart = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     try {
       await addToCart(product._id, 1);
       toast.success('Added to cart!');
@@ -46,11 +47,10 @@ const ProductCard = ({ product, className = '' }) => {
     return Array.from({ length: 5 }, (_, i) => (
       <StarIcon
         key={i}
-        className={`w-4 h-4 ${
-          i < Math.floor(rating) 
-            ? 'text-yellow-400 fill-current' 
-            : 'text-gray-300'
-        }`}
+        className={`w-4 h-4 ${i < Math.floor(rating)
+          ? 'text-yellow-400 fill-current'
+          : 'text-gray-300'
+          }`}
       />
     ));
   };
@@ -67,13 +67,24 @@ const ProductCard = ({ product, className = '' }) => {
     >
       <Link to={`/products/${product.slug}`} className="block">
         {/* Product Image */}
-        <div className="relative aspect-square overflow-hidden bg-gray-100">
-          <img
-            src={product.images?.[0]?.url || '/api/placeholder/300/300'}
-            alt={product.name}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-          />
-          
+        <div className="relative aspect-square overflow-hidden bg-gray-100 flex items-center justify-center">
+          {(() => {
+            const imageUrl = getImageUrl(product.image || (product.images && product.images[0]?.url));
+            return (
+              <img
+                src={imageUrl}
+                alt={product.name}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                referrerPolicy="no-referrer"
+                onError={(e) => {
+                  if (e.target.src !== 'https://placehold.co/400x400?text=Image+Not+Found') {
+                    e.target.src = 'https://placehold.co/400x400?text=Image+Not+Found';
+                  }
+                }}
+              />
+            );
+          })()}
+
           {/* Discount Badge */}
           {product.discountPercentage > 0 && (
             <div className="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full">

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { productsAPI } from '../services/api';
+import { productsAPI, getImageUrl } from '../services/api';
 
 const Home = React.memo(() => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
@@ -12,16 +12,16 @@ const Home = React.memo(() => {
     try {
       setLoading(true);
       setError(null);
-      
+
       const productsRes = await productsAPI.getAll({ limit: 4, featured: true });
 
       if (productsRes?.success && productsRes.data) {
-        const products = Array.isArray(productsRes.data) 
-          ? productsRes.data 
-          : Array.isArray(productsRes.data.products) 
-          ? productsRes.data.products 
-          : [];
-        
+        const products = Array.isArray(productsRes.data)
+          ? productsRes.data
+          : Array.isArray(productsRes.data.products)
+            ? productsRes.data.products
+            : [];
+
         setFeaturedProducts(products);
       } else {
         setFeaturedProducts([]);
@@ -111,7 +111,7 @@ const Home = React.memo(() => {
               View All
             </Link>
           </div>
-          
+
           {!Array.isArray(featuredProducts) || featuredProducts.length === 0 ? (
             <div className="empty-state">
               <p>No featured products available</p>
@@ -133,7 +133,7 @@ const Home = React.memo(() => {
           <div className="section-header">
             <h2>Shop by Category</h2>
           </div>
-          
+
           <div className="grid grid-4">
             {categories.map(category => (
               <Link key={category.name} to={category.path} className="card category-card">
@@ -149,32 +149,34 @@ const Home = React.memo(() => {
 });
 
 const ProductCard = React.memo(({ product }) => {
-  const [imgSrc, setImgSrc] = useState(product?.image || '/api/placeholder/200/200');
-  const [imgError, setImgError] = useState(false);
-
-  const handleImageError = useCallback(() => {
-    if (!imgError) {
-      setImgError(true);
-      setImgSrc('/api/placeholder/200/200');
-    }
-  }, [imgError]);
-
   if (!product?._id) return null;
+
+  const imageUrl = getImageUrl(product.image || (product.images && product.images[0]?.url));
 
   return (
     <div className="card product-card">
-      <div className="product-image">
-        <img 
-          src={imgSrc}
+      <div className="product-image" style={{ background: '#f3f4f6', height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+        <img
+          src={imageUrl}
           alt={product.name || 'Product'}
-          onError={handleImageError}
+          onError={(e) => {
+            if (e.target.src !== 'https://placehold.co/400x400?text=Error+Loading+Image') {
+              e.target.src = 'https://placehold.co/400x400?text=Error+Loading+Image';
+            }
+          }}
+          referrerPolicy="no-referrer"
           loading="lazy"
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         />
       </div>
-      <div className="product-info">
-        <h3>{product.name || 'Unnamed Product'}</h3>
-        <p className="product-price">${product.price || '0.00'}</p>
-        <button className="btn btn-sm btn-primary">
+      <div className="product-info" style={{ padding: '15px' }}>
+        <h3 title={product.name} style={{ margin: '0 0 10px 0', fontSize: '1.1rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+          {product.name || 'Unnamed Product'}
+        </h3>
+        <p className="product-price" style={{ color: '#3b82f6', fontWeight: 'bold', fontSize: '1.25rem', margin: '0 0 15px 0' }}>
+          ${product.price || '0.00'}
+        </p>
+        <button className="btn btn-primary" style={{ width: '100%' }}>
           Add to Cart
         </button>
       </div>

@@ -10,5 +10,5 @@ Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd ecommerce-fron
 
 Write-Host ""
 Write-Host "✅ Both servers are starting..." -ForegroundColor Green
-Write-Host "🔗 Backend: http://localhost:8000" -ForegroundColor Cyan
-Write-Host "🔗 Frontend: http://localhost:3000" -ForegroundColor Cyan
+Write-Host "🔗 Backend: http://localhost:8001" -ForegroundColor Cyan
+Write-Host "🔗 Frontend: http://localhost:5001" -ForegroundColor Cyan

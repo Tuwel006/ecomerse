@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { productsAPI } from '../services/api';
+import { productsAPI, getImageUrl } from '../services/api';
 import { useCart } from '../context/CartContext';
 
 const Products = React.memo(() => {
@@ -20,20 +20,20 @@ const Products = React.memo(() => {
     try {
       setLoading(true);
       setError(null);
-      
+
       const cleanFilters = Object.entries(filters)
         .filter(([, value]) => value !== '' && value != null)
         .reduce((obj, [key, value]) => ({ ...obj, [key]: value }), {});
-      
+
       const response = await productsAPI.getAll(cleanFilters);
-      
+
       if (response?.success && response.data) {
-        const productList = Array.isArray(response.data) 
-          ? response.data 
-          : Array.isArray(response.data.products) 
-          ? response.data.products 
-          : [];
-        
+        const productList = Array.isArray(response.data)
+          ? response.data
+          : Array.isArray(response.data.products)
+            ? response.data.products
+            : [];
+
         setProducts(productList);
       } else {
         setProducts([]);
@@ -59,7 +59,7 @@ const Products = React.memo(() => {
 
   const handleAddToCart = useCallback((product) => {
     if (!product?._id) return;
-    
+
     try {
       addToCart({
         id: product._id,
@@ -78,7 +78,7 @@ const Products = React.memo(() => {
 
   const pageTitle = useMemo(() => {
     const category = filters.category;
-    return category 
+    return category
       ? `${category.charAt(0).toUpperCase() + category.slice(1)} Products - DSM Kart`
       : 'All Products - DSM Kart';
   }, [filters.category]);
@@ -122,7 +122,7 @@ const Products = React.memo(() => {
                 value={filters.search}
                 onChange={(e) => handleFilterChange('search', e.target.value)}
               />
-              
+
               <select
                 className="input"
                 value={filters.category}
@@ -134,7 +134,7 @@ const Products = React.memo(() => {
                 <option value="home">Home & Garden</option>
                 <option value="sports">Sports</option>
               </select>
-              
+
               <input
                 type="number"
                 placeholder="Min Price"
@@ -142,7 +142,7 @@ const Products = React.memo(() => {
                 value={filters.minPrice}
                 onChange={(e) => handleFilterChange('minPrice', e.target.value)}
               />
-              
+
               <input
                 type="number"
                 placeholder="Max Price"
@@ -177,9 +177,9 @@ const Products = React.memo(() => {
           ) : (
             <div className="grid grid-4">
               {products.map(product => (
-                <ProductCard 
-                  key={product._id} 
-                  product={product} 
+                <ProductCard
+                  key={product._id}
+                  product={product}
                   onAddToCart={handleAddToCart}
                 />
               ))}
@@ -192,47 +192,52 @@ const Products = React.memo(() => {
 });
 
 const ProductCard = React.memo(({ product, onAddToCart }) => {
-  const [imgSrc, setImgSrc] = useState(product?.image || '/api/placeholder/200/200');
-  const [imgError, setImgError] = useState(false);
-
-  const handleImageError = useCallback(() => {
-    if (!imgError) {
-      setImgError(true);
-      setImgSrc('/api/placeholder/200/200');
-    }
-  }, [imgError]);
-
   const handleAddToCart = useCallback(() => {
-    onAddToCart(product);
+    if (product) {
+      onAddToCart(product);
+    }
   }, [onAddToCart, product]);
 
   if (!product?._id) return null;
 
+  const imageUrl = getImageUrl(product.image || (product.images && product.images[0]?.url));
+  console.log("imageUrl", imageUrl);
   return (
     <div className="card product-card">
-      <div className="product-image">
-        <img 
-          src={imgSrc}
+      <div className="product-image" style={{ background: '#f3f4f6', height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+        <img
+          src={imageUrl}
           alt={product.name || 'Product'}
-          onError={handleImageError}
-          loading="lazy"
+          onError={(e) => {
+            if (e.target.src !== 'https://placehold.co/400x400?text=Error+Loading+Image') {
+              e.target.src = 'https://placehold.co/400x400?text=Error+Loading+Image';
+            }
+          }}
+          referrerPolicy="no-referrer"
+          // loading="lazy"
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         />
       </div>
-      <div className="product-info">
-        <h3>{product.name || 'Unnamed Product'}</h3>
+      <div className="product-info" style={{ padding: '15px' }}>
+        <h3 title={product.name} style={{ margin: '0 0 10px 0', fontSize: '1.1rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+          {product.name || 'Unnamed Product'}
+        </h3>
         {product.description && (
-          <p className="product-description">
-            {product.description.length > 100 
-              ? `${product.description.substring(0, 100)}...` 
+          <p className="product-description" style={{ color: '#666', fontSize: '0.9rem', height: '3em', overflow: 'hidden', marginBottom: '10px' }}>
+            {product.description.length > 100
+              ? `${product.description.substring(0, 100)}...`
               : product.description
             }
           </p>
         )}
-        <p className="product-price">${product.price || '0.00'}</p>
-        <button 
+        <p className="product-price" style={{ color: '#3b82f6', fontWeight: 'bold', fontSize: '1.25rem', margin: '0 0 15px 0' }}>
+          ${product.price || '0.00'}
+        </p>
+        <button
           onClick={handleAddToCart}
           className="btn btn-primary"
           disabled={!product._id}
+          style={{ width: '100%' }}
         >
           Add to Cart
         </button>

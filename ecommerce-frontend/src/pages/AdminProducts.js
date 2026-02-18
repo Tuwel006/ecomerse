@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
 import AdminLayout from '../components/AdminLayout';
-import { productsAPI } from '../services/api';
+import { productsAPI, getImageUrl } from '../services/api';
 
 const AdminProducts = React.memo(() => {
   const [products, setProducts] = useState([]);
@@ -12,12 +12,12 @@ const AdminProducts = React.memo(() => {
     try {
       setLoading(true);
       setError(null);
-      
+
       const response = await productsAPI.getAll();
-      
+
       if (response?.success && response.data) {
-        const productList = Array.isArray(response.data) 
-          ? response.data 
+        const productList = Array.isArray(response.data)
+          ? response.data
           : response.data.products || [];
         setProducts(productList);
       } else {
@@ -37,7 +37,7 @@ const AdminProducts = React.memo(() => {
 
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this product?')) return;
-    
+
     try {
       const result = await productsAPI.delete(id);
       if (result?.success) {
@@ -53,7 +53,7 @@ const AdminProducts = React.memo(() => {
       <Helmet>
         <title>Products - Admin Dashboard</title>
       </Helmet>
-      
+
       <AdminLayout currentPage="products">
         <div className="admin-content">
           <div className="page-header">
@@ -88,10 +88,11 @@ const AdminProducts = React.memo(() => {
                   {products.map(product => (
                     <tr key={product._id}>
                       <td>
-                        <img 
-                          src={product.image || '/api/placeholder/40/40'} 
+                        <img
+                          src={getImageUrl(product.image || (product.images && product.images[0]?.url))}
                           alt={product.name}
                           className="product-thumb"
+                          onError={(e) => e.target.src = 'https://via.placeholder.com/40x40?text=NA'}
                         />
                       </td>
                       <td>{product.name}</td>
@@ -106,7 +107,7 @@ const AdminProducts = React.memo(() => {
                       <td>
                         <div className="action-buttons">
                           <button className="btn btn-sm btn-secondary">Edit</button>
-                          <button 
+                          <button
                             className="btn btn-sm btn-danger"
                             onClick={() => handleDelete(product._id)}
                           >

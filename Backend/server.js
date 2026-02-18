@@ -12,6 +12,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use('/uploads', express.static('uploads'));
+app.use(express.static('public'));
 
 // Database connection
 const connectDB = async () => {
@@ -30,8 +32,7 @@ const connectDB = async () => {
 connectDB();
 
 // Routes
-app.use('/api/auth', require('./routes/auth.routes'));
-app.use('/api/products', require('./routes/product.routes'));
+app.use('/api', require('./routes'));
 
 // Health check
 app.get('/api/health', (req, res) => {
